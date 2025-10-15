@@ -1,0 +1,26 @@
+name: Generate Report PDF
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y pandoc wkhtmltopdf
+      - name: Render HTML from Markdown
+        run: |
+          pandoc AI_Tools_Assignment_Report.md -o report.html --template=report_template.html --css=styles/report.css
+      - name: Convert HTML to PDF
+        run: |
+          wkhtmltopdf report.html AI_Tools_Assignment_Report_final.pdf
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI_Tools_Assignment_Report_final
+          path: AI_Tools_Assignment_Report_final.pdf

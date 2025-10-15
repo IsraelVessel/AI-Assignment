@@ -1,0 +1,16 @@
+name: aitools
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - pip:
+    - tensorflow
+    - spacy
+    - streamlit
+    - jupyter

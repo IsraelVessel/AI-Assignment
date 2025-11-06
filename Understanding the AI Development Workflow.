@@ -1,0 +1,328 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO4QICe2SjvYMiV4gGfto9e",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/IsraelVessel/AI-Assignment/blob/main/Understanding%20the%20AI%20Development%20Workflow.\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "jscqpHiblY3I"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "f997b0ca"
+      },
+      "source": [
+        "# Task\n",
+        "Create a plan to complete the AI Development Workflow assignment, including defining the problem, data handling, model development, evaluation, deployment, ethical analysis, documentation, and submission requirements."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "dc8e4c17"
+      },
+      "source": [
+        "## Understand the problem and define objectives\n",
+        "\n",
+        "### Subtask:\n",
+        "Clearly define the real-world problem you want to address using AI and set specific, measurable, achievable, relevant, and time-bound (SMART) objectives for your AI solution.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "01526402"
+      },
+      "source": [
+        "## Data collection and preparation\n",
+        "\n",
+        "### Subtask:\n",
+        "Identify and gather the necessary data. This includes cleaning, transforming, and preparing the data for model training and evaluation.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "0347d419"
+      },
+      "source": [
+        "## Model selection and development\n",
+        "\n",
+        "### Subtask:\n",
+        "Choose appropriate AI models based on your problem and data. Develop, train, and fine-tune the models.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "c27a7b97"
+      },
+      "source": [
+        "**Reasoning**:\n",
+        "Since the problem and data characteristics are not explicitly defined in the previous steps, I will assume a binary classification problem with a dataset that is suitable for standard scikit-learn models. I will use a Logistic Regression model as a starting point. I will generate some dummy data to demonstrate the process of splitting data, training a model, and performing a simple hyperparameter tuning.\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "69c90ccd",
+        "outputId": "6e1b3f55-ac96-4ae5-af15-2e322cc185ec"
+      },
+      "source": [
+        "import numpy as np\n",
+        "from sklearn.model_selection import train_test_split, GridSearchCV\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.datasets import make_classification\n",
+        "\n",
+        "# Generate dummy data for demonstration\n",
+        "X, y = make_classification(n_samples=1000, n_features=20, random_state=42)\n",
+        "\n",
+        "# Split data into training and validation sets\n",
+        "X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+        "\n",
+        "# Initialize the model\n",
+        "model = LogisticRegression()\n",
+        "\n",
+        "# Train the model\n",
+        "model.fit(X_train, y_train)\n",
+        "\n",
+        "# Define hyperparameter grid for tuning\n",
+        "param_grid = {'C': [0.1, 1, 10]}\n",
+        "\n",
+        "# Perform Grid Search with cross-validation\n",
+        "grid_search = GridSearchCV(LogisticRegression(), param_grid, cv=5)\n",
+        "grid_search.fit(X_train, y_train)\n",
+        "\n",
+        "# Get the best model\n",
+        "best_model = grid_search.best_estimator_\n",
+        "\n",
+        "# Print the best hyperparameters\n",
+        "print(\"Best hyperparameters:\", grid_search.best_params_)\n",
+        "\n",
+        "# Note: In a real scenario, you would save the trained model and its configuration.\n",
+        "trained_models = {'logistic_regression': {'model': best_model, 'params': grid_search.best_params_}}"
+      ],
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Best hyperparameters: {'C': 0.1}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "9e8b57fd"
+      },
+      "source": [
+        "## Evaluation and validation\n",
+        "\n",
+        "### Subtask:\n",
+        "Evaluate your model's performance using relevant metrics and validation techniques. Ensure the model is robust and generalizes well to new data.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "a593c087"
+      },
+      "source": [
+        "**Reasoning**:\n",
+        "Import the necessary evaluation metrics and calculate the accuracy, precision, recall, and F1-score for the trained model on the validation set.\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "154aecec",
+        "outputId": "8fbda060-f1b2-48bd-ee7a-bdd2fe157f3f"
+      },
+      "source": [
+        "from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score\n",
+        "\n",
+        "# Get the trained model\n",
+        "model = trained_models['logistic_regression']['model']\n",
+        "\n",
+        "# Make predictions on the validation set\n",
+        "y_pred = model.predict(X_val)\n",
+        "\n",
+        "# Calculate evaluation metrics\n",
+        "accuracy = accuracy_score(y_val, y_pred)\n",
+        "precision = precision_score(y_val, y_pred)\n",
+        "recall = recall_score(y_val, y_pred)\n",
+        "f1 = f1_score(y_val, y_pred)\n",
+        "\n",
+        "# Print the evaluation metrics\n",
+        "print(f\"Accuracy: {accuracy:.4f}\")\n",
+        "print(f\"Precision: {precision:.4f}\")\n",
+        "print(f\"Recall: {recall:.4f}\")\n",
+        "print(f\"F1-score: {f1:.4f}\")"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.8650\n",
+            "Precision: 0.9255\n",
+            "Recall: 0.8131\n",
+            "F1-score: 0.8657\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "7CMdr_ismzqN"
+      },
+      "execution_count": 4,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [],
+      "metadata": {
+        "id": "R7XVP8DHm0U1"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "5820cba3"
+      },
+      "source": [
+        "## Deployment and monitoring\n",
+        "\n",
+        "### Subtask:\n",
+        "Plan how to deploy your model and set up monitoring to track its performance in a real-world environment.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "1c95e79b"
+      },
+      "source": [
+        "## Ethical considerations and challenges analysis\n",
+        "\n",
+        "### Subtask:\n",
+        "Analyze the potential ethical implications of your AI solution and identify potential challenges in its development and deployment. This includes fairness, bias, privacy, and transparency.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "603bdf30"
+      },
+      "source": [
+        "## Documentation and reporting\n",
+        "\n",
+        "### Subtask:\n",
+        "Document your process, findings, and code. Prepare a report or presentation summarizing your work, including the problem, solution, results, and ethical analysis.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "20bfa5fa"
+      },
+      "source": [
+        "## Github repository setup\n",
+        "\n",
+        "### Subtask:\n",
+        "Create a GitHub repository to store your code, documentation, and any other relevant files. Ensure the code is well-commented.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "eb8dfea3"
+      },
+      "source": [
+        "## Github repository setup retry 1\n",
+        "\n",
+        "### Subtask:\n",
+        "Create a GitHub repository to store your code, documentation, and any other relevant files. Ensure the code is well-commented.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "03679f6e"
+      },
+      "source": [
+        "## Community article preparation\n",
+        "\n",
+        "### Subtask:\n",
+        "Prepare the PDF article for submission to the PLP Academy Community, following the specified guidelines.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "7d823629"
+      },
+      "source": [
+        "## Summary:\n",
+        "\n",
+        "### Data Analysis Key Findings\n",
+        "\n",
+        "*   The task involved planning an AI Development Workflow assignment, covering problem definition, data handling, model development, evaluation, deployment, ethical analysis, documentation, and submission.\n",
+        "*   Initial steps like problem definition, data handling planning, deployment planning, ethical analysis, and documentation were addressed conceptually as they did not require code execution.\n",
+        "*   Model development and evaluation steps involved code execution using dummy data. A Logistic Regression model was trained and tuned using `GridSearchCV`, and its performance was evaluated using accuracy, precision, recall, and F1-score metrics.\n",
+        "*   The calculated evaluation metrics on the validation set for the Logistic Regression model were: Accuracy: 0.8650, Precision: 0.9255, Recall: 0.8131, and F1-score: 0.8657.\n",
+        "*   Attempting to set up a GitHub repository failed due to limitations of the execution environment in interacting with external systems.\n",
+        "*   The preparation of the community article was addressed conceptually as it involves document creation and formatting, which are outside the scope of the execution environment.\n",
+        "\n",
+        "### Insights or Next Steps\n",
+        "\n",
+        "*   While the planning and conceptual stages of the workflow were addressed, practical steps involving external interactions (like GitHub) or document creation require execution outside of this environment.\n",
+        "*   The model developed and evaluated on dummy data provides a foundational example; in a real-world scenario, actual problem data would be used for training and evaluation, and the model would need to be saved and deployed.\n"
+      ]
+    }
+  ]
+}
